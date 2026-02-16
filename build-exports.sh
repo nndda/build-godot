@@ -1,6 +1,6 @@
 set -euo pipefail
 
-mv "$(realpath "${BASH_SOURCE[0]}")" "$RUNNER_TEMP" # wat
+# mv "$(realpath "${BASH_SOURCE[0]}")" "$RUNNER_TEMP" # wat
 
 # Install dependencies
 sudo apt-get update
