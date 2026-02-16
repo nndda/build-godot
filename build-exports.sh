@@ -28,7 +28,7 @@ sudo apt-get install -qq -y \
 xtra_flags=""
 
 git clone --quiet --no-progress --depth=1 --branch="$GODOT_VERSION" https://github.com/godotengine/godot.git .
-git clone --quiet --no-progress --depth=1 --branch="$GITHUB_SHA" https://github.com/$GITHUB_REPOSITORY.git "$RUNNER_TEMP/godot-project/"
+git clone --quiet --no-progress --depth=1 --branch="$GITHUB_REF_NAME" https://github.com/$GITHUB_REPOSITORY.git "$RUNNER_TEMP/godot-project/"
 
 cp "$RUNNER_TEMP/godot-project/custom.py" . || true
 cp "$RUNNER_TEMP/godot-project/custom.gdbuild" . || true
