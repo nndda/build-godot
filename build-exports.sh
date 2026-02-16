@@ -43,7 +43,7 @@ if [[ -f "custom.gdbuild" ]]; then
   xtra_flags+=" build_profile=custom.gdbuild"
 fi
 
-if [[ "$EXPORT_TARGET" == "windows" ]]; then
+if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
   echo "Updating POSIX..."
   sudo update-alternatives --set x86_64-w64-mingw32-gcc \
     /usr/bin/x86_64-w64-mingw32-gcc-posix
