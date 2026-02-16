@@ -3,8 +3,8 @@ set -euo pipefail
 # mv "$(realpath "${BASH_SOURCE[0]}")" "$RUNNER_TEMP" # wat
 
 # Install dependencies
-sudo apt-get update
-sudo apt-get install -y \
+sudo apt-get update -qq
+sudo apt-get install -qq -y \
   build-essential \
   scons \
   pkg-config \
@@ -27,8 +27,8 @@ sudo apt-get install -y \
 
 xtra_flags=""
 
-git clone --depth=1 --branch="$GODOT_VERSION" https://github.com/godotengine/godot.git .
-git clone --depth=1 --branch="$GITHUB_REF" https://github.com/$GITHUB_REPOSITORY.git "$RUNNER_TEMP/godot-project/"
+git clone --quiet --no-progress --depth=1 --branch="$GODOT_VERSION" https://github.com/godotengine/godot.git .
+git clone --quiet --no-progress --depth=1 --branch="$GITHUB_SHA" https://github.com/$GITHUB_REPOSITORY.git "$RUNNER_TEMP/godot-project/"
 
 cp "$RUNNER_TEMP/godot-project/custom.py" . || true
 cp "$RUNNER_TEMP/godot-project/custom.gdbuild" . || true
