@@ -28,10 +28,10 @@ sudo apt-get install -y \
 xtra_flags=""
 
 git clone --depth=1 --branch="$GODOT_VERSION" https://github.com/godotengine/godot.git .
-git clone --depth=1 --branch="$GITHUB_REF" https://github.com/$GITHUB_REPOSITORY.git "$RUNNER_TEMP"
+git clone --depth=1 --branch="$GITHUB_REF" https://github.com/$GITHUB_REPOSITORY.git "$RUNNER_TEMP/godot-project/"
 
-cp "$RUNNER_TEMP/custom.py" . || true
-cp "$RUNNER_TEMP/custom.gdbuild" . || true
+cp "$RUNNER_TEMP/godot-project/custom.py" . || true
+cp "$RUNNER_TEMP/godot-project/custom.gdbuild" . || true
 
 if [[ -f "custom.py" ]]; then
   echo "custom.py file detected..."
