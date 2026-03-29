@@ -68,7 +68,13 @@ if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
   echo "Installing Direct3D 12 driver..."
   python ./misc/scripts/install_d3d12_sdk_windows.py
 
-  xtra_flags+=" use_mingw=yes"
+  xtra_flags+=" d3d12=yes"
+
+  if [[ "$EXPORT_ARCH" != "arm64" ]]; then
+  
+    xtra_flags+=" use_mingw=yes"
+
+  fi
 fi
 
 scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
