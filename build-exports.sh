@@ -43,6 +43,16 @@ if [[ -f "custom.gdbuild" ]]; then
   xtra_flags+=" build_profile=custom.gdbuild"
 fi
 
+if [[ "$EXPORT_ARCH" == "arm64" ]]; then
+
+  sudo apt-get install -qq -y \
+    clang \
+    lld
+
+  xtra_flags+=" use_llvm=yes"
+
+fi
+
 if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
   echo "Updating POSIX..."
   sudo update-alternatives --set x86_64-w64-mingw32-gcc \
@@ -61,4 +71,4 @@ if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
   xtra_flags+=" use_mingw=yes"
 fi
 
-scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full target=template_release debug_symbols=no $xtra_flags
+scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
