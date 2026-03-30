@@ -67,6 +67,8 @@ if [[ "$EXPORT_PLATFORM" == "android" ]]; then
 
   export ANDROID_HOME="$RUNNER_TEMP/android-sdk/"
 
+  python ./misc/scripts/install_swappy_android.py
+
 fi
 
 
