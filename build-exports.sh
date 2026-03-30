@@ -63,7 +63,7 @@ if [[ "$EXPORT_PLATFORM" == "android" ]]; then
   curl https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip -o commandlinetools.zip
   unzip commandlinetools.zip -d "$RUNNER_TEMP/commandlinetools/"
   rm commandlinetools.zip
-  JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64 "$RUNNER_TEMP/commandlinetools/cmdline-tools/bin/sdkmanager" --sdk_root="$RUNNER_TEMP/android-sdk/" "platform-tools" "build-tools;35.0.1" "platforms;android-35" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;28.1.13356709"
+  yes | JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64 "$RUNNER_TEMP/commandlinetools/cmdline-tools/bin/sdkmanager" --sdk_root="$RUNNER_TEMP/android-sdk/" "platform-tools" "build-tools;35.0.1" "platforms;android-35" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;28.1.13356709"
 
   export ANDROID_HOME="$RUNNER_TEMP/android-sdk/"
 
