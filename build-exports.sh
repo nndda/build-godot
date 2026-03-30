@@ -26,6 +26,11 @@ sudo apt-get install -qqy \
   curl
 
 
+curl -L https://github.com/ip7z/7zip/releases/download/26.00/7z2600-linux-x64.tar.xz -o 7zip.tar.xz
+mkdir -p "$RUNNER_TEMP/7zip/" && tar -xf 7zip.tar.xz -C "$RUNNER_TEMP/7zip/"
+export PATH="$RUNNER_TEMP/7zip/:$PATH"
+rm 7zip.tar.xz
+
 xtra_flags=""
 
 
@@ -121,6 +126,9 @@ if [[ "$EXPORT_PLATFORM" == "android" ]]; then
   scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=no target=template_debug debug_symbols=yes $xtra_flags generate_android_binaries=yes
 
 else
+
   scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
+
 fi
 
+7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=2 -ms=on "$EXPORT_PLATFORM-$EXPORT_ARCH.7z" "./bin/" -xr!obj -xr!build_deps
