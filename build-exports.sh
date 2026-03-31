@@ -214,7 +214,7 @@ build() {
   else
 
     scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_release production=yes debug_symbols=no lto=full dev_build=no
-    scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug
+    # scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug
 
   fi
 
