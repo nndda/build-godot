@@ -139,4 +139,4 @@ else
 
 fi
 
-7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=4 -ms=on "$EXPORT_PLATFORM-$EXPORT_ARCH.7z" "./bin/" -xr!obj -xr!build_deps
+7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=4 -ms=on "$EXPORT_PLATFORM-$EXPORT_TYPE-$EXPORT_ARCH.7z" "./bin/" -xr!obj -xr!build_deps
