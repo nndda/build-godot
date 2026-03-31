@@ -5,7 +5,7 @@ set -euo pipefail
 
 
 
-setup() {
+setup_uwu_desu() {
 
   xtra_flags=""
 
@@ -135,7 +135,7 @@ setup() {
 
 
 
-build() {
+build_uwu_desu() {
 
 
   xtra_flags="$XTRA_FLAGS"
@@ -196,11 +196,11 @@ build() {
 
 
 case "$1" in
-  install)
-    install
+  install_uwu)
+    install_uwu_desu
     ;;
-  build)
-    build
+  build_uwu)
+    build_uwu_desu
     ;;
 esac
 
