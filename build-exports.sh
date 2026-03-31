@@ -122,12 +122,12 @@ fi
 
 if [[ "$EXPORT_PLATFORM" == "android" ]]; then
 
-  scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
-  scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=no target=template_debug debug_symbols=yes $xtra_flags generate_android_binaries=yes
+  scons -j2 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
+  scons -j2 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=no target=template_debug debug_symbols=yes $xtra_flags generate_android_binaries=yes
 
 else
 
-  scons platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
+  scons -j2 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
 
 fi
 
