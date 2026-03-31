@@ -133,7 +133,7 @@ setup() {
   echo "::endgroup::"
 
 
-  echo "XTRA_FLAGS=$xtra_flags" >> "$GITHUB_ENV"
+  echo "EXTRA_FLAGS=$xtra_flags" >> "$GITHUB_ENV"
 
 }
 
@@ -143,7 +143,9 @@ build() {
 
   export PATH="$RUNNER_TEMP/7zip/:$PATH"
 
-  xtra_flags="$XTRA_FLAGS"
+  xtra_flags="$EXTRA_FLAGS"
+
+
 
   if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
 
@@ -192,8 +194,9 @@ build() {
   fi
 
 
-  scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" "$xtra_flags"
+  echo "flags: $xtra_flags"
 
+  scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" "$xtra_flags"
 
   7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=4 -ms=on "$EXPORT_PLATFORM-$EXPORT_TYPE-$EXPORT_ARCH.7z" "./bin/*" -xr!obj -xr!build_deps
 
