@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 echo "im losing my mind: $@"
+echo "im losing my mind: $0"
+echo "im losing my mind: $1"
 
 set -euo pipefail
 
@@ -196,7 +198,7 @@ build_uwu_desu() {
 }
 
 
-case "$1" in
+case "$2" in
   install_uwu)
     install_uwu_desu
     ;;
