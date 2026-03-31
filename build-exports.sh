@@ -54,6 +54,10 @@ setup() {
   echo "::endgroup::"
 
 
+  echo "::group::Cloning Godot $GODOT_VERSION source"
+  git clone --quiet --no-progress --depth=1 --branch="$GODOT_VERSION" https://github.com/godotengine/godot.git .
+  echo "::endgroup::"
+
 
   if [[ "$EXPORT_PLATFORM" == "android" ]]; then
 
@@ -98,11 +102,6 @@ setup() {
     echo "::endgroup::"
 
   fi
-
-
-  echo "::group::Cloning Godot $GODOT_VERSION source"
-  git clone --quiet --no-progress --depth=1 --branch="$GODOT_VERSION" https://github.com/godotengine/godot.git .
-  echo "::endgroup::"
 
 
   echo "::group::Cloning Godot project"
