@@ -1,7 +1,5 @@
 set -euo pipefail
 
-# mv "$(realpath "${BASH_SOURCE[0]}")" "$RUNNER_TEMP" # wat
-
 # Install dependencies
 sudo apt-get update -qq
 sudo apt-get install -qqy \
@@ -120,15 +118,25 @@ if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
 
 fi
 
-if [[ "$EXPORT_PLATFORM" == "android" ]]; then
+if [[ "$EXPORT_TYPE" == "release" ]]; then
 
-  scons -j2 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
-  scons -j2 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=no target=template_debug debug_symbols=yes $xtra_flags generate_android_binaries=yes
+  xtra_flags+=" target=template_release production=yes debug_symbols=no lto=full"
 
 else
 
-  scons -j2 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH lto=full production=yes target=template_release debug_symbols=no $xtra_flags
+  xtra_flags+=" target=template_debug production=no debug_symbols=yes lto=none"
 
 fi
 
-7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=2 -ms=on "$EXPORT_PLATFORM-$EXPORT_ARCH.7z" "./bin/" -xr!obj -xr!build_deps
+
+if [[ "$EXPORT_PLATFORM" == "android" ]]; then
+
+  scons -j4 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH $xtra_flags generate_android_binaries=yes
+
+else
+
+  scons -j4 platform=$EXPORT_PLATFORM arch=$EXPORT_ARCH $xtra_flags
+
+fi
+
+7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=4 -ms=on "$EXPORT_PLATFORM-$EXPORT_ARCH.7z" "./bin/" -xr!obj -xr!build_deps
