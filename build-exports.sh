@@ -177,31 +177,53 @@ build() {
   fi
 
 
-  if [[ "$EXPORT_TYPE" == "release" ]]; then
 
-    xtra_flags+=" target=template_release production=yes debug_symbols=no lto=full"
+  # if [[ "$EXPORT_TYPE" == "release" ]]; then
 
-  else
+  #   xtra_flags+=" target=template_release production=yes debug_symbols=no lto=full dev_build=no"
 
-    xtra_flags+=" target=template_debug"
+  # else
 
-  fi
+  #   xtra_flags+=" target=template_debug"
+
+  # fi
+
 
 
   if [[ "$EXPORT_PLATFORM" == "android" ]]; then
 
-    xtra_flags+=" generate_android_binaries=yes"
+    # xtra_flags+=" generate_android_binaries=yes"
+
+    if [[ "$EXPORT_ARCH" == "arm32-arm64" ]]; then
+
+      scons -j4 platform="$EXPORT_PLATFORM" arch=arm32 $xtra_flags target=template_release production=yes debug_symbols=no lto=full dev_build=no
+      scons -j4 platform="$EXPORT_PLATFORM" arch=arm64 $xtra_flags target=template_release production=yes debug_symbols=no lto=full dev_build=no generate_android_binaries=yes
+
+      scons -j4 platform="$EXPORT_PLATFORM" arch=arm32 $xtra_flags target=template_debug
+      scons -j4 platform="$EXPORT_PLATFORM" arch=arm64 $xtra_flags target=template_debug generate_android_binaries=yes
+
+    else
+
+      scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_release production=yes debug_symbols=no lto=full dev_build=no
+      scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug generate_android_binaries=yes
+
+    fi
 
     unset ANDROID_SDK_ROOT
+
+  else
+
+    scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_release production=yes debug_symbols=no lto=full dev_build=no
+    scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug
 
   fi
 
 
-  echo "flags: $xtra_flags"
+  # scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_release production=yes debug_symbols=no lto=full dev_build=no
+  # scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug
 
-  scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags
-
-  7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=4 -ms=on "$EXPORT_PLATFORM-$EXPORT_TYPE-$EXPORT_ARCH.7z" "./bin/*" -xr!obj -xr!build_deps
+  7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=4 -ms=on "$EXPORT_PLATFORM-$EXPORT_ARCH.7z" "./bin/*" -xr!obj -xr!build_deps
+  # 7zz a -t7z -mx=9 -m0=lzma2 -mfb=273 -md=256m -mmt=4 -ms=on "$EXPORT_PLATFORM-$EXPORT_TYPE-$EXPORT_ARCH.7z" "./bin/*" -xr!obj -xr!build_deps
 
 }
 
