@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+echo "im losing my mind: $@"
 
 set -euo pipefail
 
