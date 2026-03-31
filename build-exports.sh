@@ -102,6 +102,19 @@ setup() {
   fi
 
 
+  if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
+
+    echo "::group::Installing Direct3D 12 driver..."
+
+    python ./misc/scripts/install_d3d12_sdk_windows.py
+
+    xtra_flags+=" d3d12=yes"
+
+    echo "::endgroup::"
+
+  fi
+
+
   echo "::group::Cloning Godot project"
 
   git clone --quiet --no-progress --depth=1 --branch="$GITHUB_REF_NAME" "https://github.com/$GITHUB_REPOSITORY.git" "$RUNNER_TEMP/godot-project/"
@@ -122,16 +135,6 @@ setup() {
   fi
 
   echo "::endgroup::"
-
-
-  echo "::group::Installing Direct3D 12 driver..."
-
-  python ./misc/scripts/install_d3d12_sdk_windows.py
-
-  xtra_flags+=" d3d12=yes"
-
-  echo "::endgroup::"
-
 
   echo "EXTRA_FLAGS=$xtra_flags" >> "$GITHUB_ENV"
 
