@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-echo "im losing my mind: $@"
-echo "im losing my mind: $0"
-echo "im losing my mind: $1"
-
 set -euo pipefail
 
 
@@ -38,7 +34,7 @@ setup() {
     curl
 
   curl \
-    -L https://github.com/ip7z/7zip/releases/download/26.00/7z2600-linux-x64.tar.xz \
+    -fsSL https://github.com/ip7z/7zip/releases/download/26.00/7z2600-linux-x64.tar.xz \
     -o 7zip.tar.xz
 
   mkdir \
@@ -46,8 +42,6 @@ setup() {
     tar \
       -xf 7zip.tar.xz \
       -C "$RUNNER_TEMP/7zip/"
-
-  export PATH="$RUNNER_TEMP/7zip/:$PATH"
 
   rm 7zip.tar.xz
 
@@ -68,14 +62,18 @@ setup() {
       apt-transport-https \
       gpg
 
-    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
-    echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
+    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | \
+      gpg --dearmor | \
+      sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
+
+    echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | \
+      sudo tee /etc/apt/sources.list.d/adoptium.list
 
     sudo apt-get update -qq
     sudo apt-get install -qqy temurin-17-jdk
 
     curl \
-      -L https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip \
+      -fsSL https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip \
       -o commandlinetools.zip
 
     unzip commandlinetools.zip \
@@ -105,6 +103,7 @@ setup() {
 
 
   echo "::group::Cloning Godot project"
+
   git clone --quiet --no-progress --depth=1 --branch="$GITHUB_REF_NAME" "https://github.com/$GITHUB_REPOSITORY.git" "$RUNNER_TEMP/godot-project/"
 
   # TODO: turn these two to args
@@ -121,13 +120,16 @@ setup() {
     echo "custom.gdbuild file detected..."
     xtra_flags+=" build_profile=custom.gdbuild"
   fi
+
   echo "::endgroup::"
 
 
   echo "::group::Installing Direct3D 12 driver..."
+
   python ./misc/scripts/install_d3d12_sdk_windows.py
 
   xtra_flags+=" d3d12=yes"
+
   echo "::endgroup::"
 
 
@@ -139,6 +141,7 @@ setup() {
 
 build() {
 
+  export PATH="$RUNNER_TEMP/7zip/:$PATH"
 
   xtra_flags="$XTRA_FLAGS"
 
