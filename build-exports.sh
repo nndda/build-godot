@@ -82,7 +82,7 @@ setup() {
       -o javasdk.tar.gz
 
     mkdir \
-      -p "$RUNNER_TEMP/7zip/" && \
+      -p "$RUNNER_TEMP/java-sdk/" && \
       tar \
         -xf javasdk.tar.gz \
         -C "$RUNNER_TEMP/java-sdk/"
