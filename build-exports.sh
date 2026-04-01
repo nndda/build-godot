@@ -232,7 +232,7 @@ build() {
 
     # export JAVA_HOME="$RUNNER_TEMP/java-sdk/jdk-17.0.18+8/"
     # export ANDROID_HOME="$RUNNER_TEMP/android-sdk/"
-
+    unset ANDROID_SDK_ROOT
     # xtra_flags+=" generate_android_binaries=yes"
 
     if [[ "$EXPORT_ARCH" == "arm32-arm64" ]]; then
@@ -249,8 +249,6 @@ build() {
       scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug generate_android_binaries=yes
 
     fi
-
-    unset ANDROID_SDK_ROOT
 
   else
 
