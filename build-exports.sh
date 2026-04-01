@@ -49,28 +49,51 @@ setup() {
 
 
   echo "::group::Cloning Godot $GODOT_VERSION source"
+
   git clone --quiet --no-progress --depth=1 --branch="$GODOT_VERSION" https://github.com/godotengine/godot.git .
+
   echo "::endgroup::"
 
 
   if [[ "$EXPORT_PLATFORM" == "android" ]]; then
 
-    echo "::group::Installing Android dependencies"
+    # echo "::group::Installing Android dependencies"
 
-    sudo apt-get install -qqy \
-      wget \
-      apt-transport-https \
-      gpg
+    echo "::group::Installing Java SDK"
 
-    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | \
-      gpg --dearmor | \
-      sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
+    # sudo apt-get install -qqy \
+    #   wget \
+    #   apt-transport-https \
+    #   gpg
 
-    echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | \
-      sudo tee /etc/apt/sources.list.d/adoptium.list
+    # wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | \
+    #   gpg --dearmor | \
+    #   sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
 
-    sudo apt-get update -qq
-    sudo apt-get install -qqy temurin-17-jdk
+    # echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | \
+    #   sudo tee /etc/apt/sources.list.d/adoptium.list
+
+    # sudo apt-get update -qq
+    # sudo apt-get install -qqy temurin-17-jdk
+
+
+    curl \
+      -fsSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz \
+      -o javasdk.tar.gz
+
+    mkdir \
+      -p "$RUNNER_TEMP/7zip/" && \
+      tar \
+        -xf javasdk.tar.gz \
+        -C "$RUNNER_TEMP/java-sdk/"
+
+    export JAVA_HOME="$RUNNER_TEMP/java-sdk/jdk-17.0.18+8/"
+
+    echo "::endgroup::"
+
+
+
+    echo "::group::Installing Android SDK"
 
     curl \
       -fsSL https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip \
@@ -81,8 +104,10 @@ setup() {
 
     rm commandlinetools.zip
 
+    # TODO: try --license
+
     yes | \
-      JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64 \
+      # JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64/ \
       "$RUNNER_TEMP/commandlinetools/cmdline-tools/bin/sdkmanager" \
       --sdk_root="$RUNNER_TEMP/android-sdk/" \
         "platform-tools" \
@@ -95,16 +120,27 @@ setup() {
 
     export ANDROID_HOME="$RUNNER_TEMP/android-sdk/"
 
+    echo "::endgroup::"
+
+
+
+    echo "::group::Installing Swappy Android"
+
     python ./misc/scripts/install_swappy_android.py
 
     echo "::endgroup::"
+
+    # echo "::endgroup::"
+
+    echo "JAVA_HOME=$JAVA_HOME" >> "$GITHUB_ENV"
+    echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
 
   fi
 
 
   if [[ "$EXPORT_PLATFORM" == "windows" ]]; then
 
-    echo "::group::Installing Direct3D 12 driver..."
+    echo "::group::Installing Direct3D 12 driver"
 
     python ./misc/scripts/install_d3d12_sdk_windows.py
 
@@ -192,6 +228,9 @@ build() {
 
   if [[ "$EXPORT_PLATFORM" == "android" ]]; then
 
+    # export JAVA_HOME="$RUNNER_TEMP/java-sdk/jdk-17.0.18+8/"
+    # export ANDROID_HOME="$RUNNER_TEMP/android-sdk/"
+
     # xtra_flags+=" generate_android_binaries=yes"
 
     if [[ "$EXPORT_ARCH" == "arm32-arm64" ]]; then
@@ -217,7 +256,6 @@ build() {
     # scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug
 
   fi
-
 
   # scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_release production=yes debug_symbols=no lto=full dev_build=no
   # scons -j4 platform="$EXPORT_PLATFORM" arch="$EXPORT_ARCH" $xtra_flags target=template_debug
