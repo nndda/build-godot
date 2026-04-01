@@ -87,6 +87,8 @@ setup() {
         -xf javasdk.tar.gz \
         -C "$RUNNER_TEMP/java-sdk/"
 
+    rm javasdk.tar.gz
+
     export JAVA_HOME="$RUNNER_TEMP/java-sdk/jdk-17.0.18+8/"
 
     echo "::endgroup::"
