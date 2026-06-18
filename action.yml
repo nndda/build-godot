@@ -47,9 +47,9 @@ runs:
     - name: Setup
       shell: bash
       run: |
-        ./build.sh setup
+        build.sh setup
 
     - name: Setup
       shell: bash
       run: |
-        ./build.sh build
+        build.sh build
