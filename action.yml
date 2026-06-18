@@ -1,0 +1,55 @@
+
+name: Build Godot project
+description: Build Godot project
+
+inputs:
+
+  godot-version:
+    description: The Godot version used
+    required: true
+
+  target:
+    description: Target platform
+    required: true
+
+  arch:
+    description: Target platform architecture
+    required: true
+
+  type:
+    description: Build type
+    required: false
+    default: release
+
+runs:
+  using: composite
+
+  steps:
+    - uses: actions/setup-python@v6
+      with:
+        python-version: "3.14.2"
+
+    - name: Set GHA path
+      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+      shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+
+    - name: Set inputs to env
+      shell: bash
+      # TODO: use more consistent naming?
+      run: |
+        echo "GODOT_VERSION=${{ inputs.godot-version }}" >> $GITHUB_ENV
+        echo "EXPORT_PLATFORM=${{ inputs.target }}" >> $GITHUB_ENV
+        echo "EXPORT_ARCH=${{ inputs.arch }}" >> $GITHUB_ENV
+        echo "EXPORT_TYPE=${{ inputs.type }}" >> $GITHUB_ENV
+
+    - name: Setup
+      shell: bash
+      run: |
+        ./build.sh setup
+
+    - name: Setup
+      shell: bash
+      run: |
+        ./build.sh build

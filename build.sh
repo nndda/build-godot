@@ -106,10 +106,7 @@ setup() {
 
     rm commandlinetools.zip
 
-    # TODO: try --license
-
     yes | \
-      # JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64/ \
       "$RUNNER_TEMP/commandlinetools/cmdline-tools/bin/sdkmanager" \
       --sdk_root="$RUNNER_TEMP/android-sdk/" \
         "platform-tools" \
@@ -118,7 +115,7 @@ setup() {
         "cmdline-tools;latest" \
         "cmake;3.10.2.4988404" \
         "ndk;28.1.13356709" \
-    || true
+        --license
 
     export ANDROID_HOME="$RUNNER_TEMP/android-sdk/"
 
@@ -274,4 +271,3 @@ case "$1" in
     build
     ;;
 esac
-
