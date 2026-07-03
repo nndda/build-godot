@@ -61,7 +61,6 @@ RUN \
   && yes | \
     /usr/share/sdk/commandlinetools/cmdline-tools/bin/sdkmanager \
     --sdk_root=/usr/share/sdk/android/ \
-    --install \
       "platform-tools" \
       "build-tools;35.0.1" \
       "platforms;android-35" \
