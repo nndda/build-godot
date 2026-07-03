@@ -76,7 +76,7 @@ RUN \
       "cmdline-tools;latest" \
       "cmake;3.10.2.4988404" \
       "ndk;28.1.13356709"; \
-  && rm --recursive --force /usr/share/sdk/commandlinetools/
+  rm --recursive --force /usr/share/sdk/commandlinetools/
 
 RUN python /godot-project/src-godot/misc/scripts/install_swappy_android.py
 
