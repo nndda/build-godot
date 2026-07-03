@@ -21,6 +21,10 @@ RUN apt update && \
     libxi-dev \
     libxrandr-dev \
     libwayland-dev \
+    ca-certificates \
+    python3 \
+    python3-pip \
+    python3-venv \
     unzip \
     curl \
     p7zip-full \
