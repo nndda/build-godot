@@ -67,7 +67,7 @@ RUN \
       "platforms;android-35" \
       "cmdline-tools;latest" \
       "cmake;3.10.2.4988404" \
-      "ndk;28.1.13356709" \
+      "ndk;28.1.13356709"
 
 RUN python /godot-project/src-godot/misc/scripts/install_swappy_android.py
 
