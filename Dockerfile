@@ -24,6 +24,7 @@ RUN apt-get update && \
         libxi-dev \
         libxrandr-dev \
         libwayland-dev \
+        mingw-w64 \
         python3 \
         python3-pip \
         python3-venv \
@@ -84,5 +85,13 @@ ENV ANDROID_HOME="/usr/share/sdk/android/"
 ENV ANDROID_SDK_ROOT=
 
 # Windows
+
+RUN update-alternatives --set \
+  x86_64-w64-mingw32-gcc \
+  /usr/bin/x86_64-w64-mingw32-gcc-posix
+
+RUN update-alternatives --set \
+  x86_64-w64-mingw32-g++ \
+  /usr/bin/x86_64-w64-mingw32-g++-posix
 
 RUN python /godot-project/src-godot/misc/scripts/install_d3d12_sdk_windows.py
