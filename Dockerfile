@@ -59,8 +59,9 @@ RUN \
     -d "/usr/share/sdk/commandlinetools/" \
   && rm commandlinetools.zip \
   && yes | \
-    "/usr/share/sdk/commandlinetools/cmdline-tools/bin/sdkmanager" \
-    --sdk_root="/usr/share/sdk/android/" \
+    /usr/share/sdk/commandlinetools/cmdline-tools/bin/sdkmanager \
+    --sdk_root=/usr/share/sdk/android/ \
+    --install \
       "platform-tools" \
       "build-tools;35.0.1" \
       "platforms;android-35" \
@@ -72,7 +73,7 @@ RUN \
 RUN python /godot-project/src-godot/misc/scripts/install_swappy_android.py
 
 ENV ANDROID_HOME="/usr/share/sdk/android/"
-# ENV ANDROID_SDK_ROOT=
+ENV ANDROID_SDK_ROOT=
 
 # Windows
 
