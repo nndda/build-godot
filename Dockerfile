@@ -6,6 +6,7 @@ SHELL [ "/bin/bash", "-c" ]
 
 RUN apt update && \
     apt install -y --no-install-recommends \
+    git \
     build-essential \
     scons \
     pkg-config \
