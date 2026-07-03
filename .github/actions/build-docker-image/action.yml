@@ -30,5 +30,5 @@ runs:
       with:
         context: .
         push: true
-        tags: nndda/nnda.dev
-        file: ./config/Dockerfile
+        tags: nndda/gd-build-test
+        file: ./Dockerfile
