@@ -36,16 +36,30 @@ RUN apt-get update && \
 
 # Godot source
 
-RUN git clone \
+RUN \
+  git clone \
     --quiet \
     --no-progress \
     --depth=1 \
     --branch=4.7-stable \
     https://github.com/godotengine/godot.git /godot-project/src-godot/
 
+# Godot Binary
+
+RUN \
+  curl \
+    --fail --location \
+      https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip \
+      --output godot.zip \
+  && unzip godot.zip \
+    -d "/usr/bin/" \
+  && rm godot.zip \
+  && mv /usr/bin/Godot_v4.7-stable_linux.x86_64 /usr/bin/godot
+
 # JDK
 
-RUN mkdir --parents /usr/share/sdk/java \
+RUN \
+  mkdir --parents /usr/share/sdk/java \
   && curl \
     --fail --location \
       https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.18_8.tar.gz \
@@ -79,21 +93,21 @@ RUN \
       "ndk;28.1.13356709"; \
   rm --recursive --force /usr/share/sdk/commandlinetools/
 
-RUN python /godot-project/src-godot/misc/scripts/install_swappy_android.py
+# RUN python /godot-project/src-godot/misc/scripts/install_swappy_android.py
 
 ENV ANDROID_HOME="/usr/share/sdk/android/"
 ENV ANDROID_SDK_ROOT=
 
-# Windows
+# # Windows
 
-RUN \
-  update-alternatives --set \
-    x86_64-w64-mingw32-gcc \
-    /usr/bin/x86_64-w64-mingw32-gcc-posix \
-  && update-alternatives --set \
-  x86_64-w64-mingw32-g++ \
-  /usr/bin/x86_64-w64-mingw32-g++-posix
+# RUN \
+#   update-alternatives --set \
+#     x86_64-w64-mingw32-gcc \
+#     /usr/bin/x86_64-w64-mingw32-gcc-posix \
+#   && update-alternatives --set \
+#     x86_64-w64-mingw32-g++ \
+#     /usr/bin/x86_64-w64-mingw32-g++-posix
 
-# D3D12
+# # D3D12
 
-RUN python /godot-project/src-godot/misc/scripts/install_d3d12_sdk_windows.py
+# RUN python /godot-project/src-godot/misc/scripts/install_d3d12_sdk_windows.py
