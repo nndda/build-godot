@@ -59,7 +59,7 @@ RUN \
     -d "/usr/share/sdk/commandlinetools/" \
   && rm commandlinetools.zip \
   && yes | \
-    "/usr/share/sdk/commandlinetools/commandlinetools/cmdline-tools/bin/sdkmanager" \
+    "/usr/share/sdk/commandlinetools/cmdline-tools/bin/sdkmanager" \
     --sdk_root="/usr/share/sdk/android/" \
       "platform-tools" \
       "build-tools;35.0.1" \
