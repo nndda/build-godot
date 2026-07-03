@@ -8,6 +8,7 @@ RUN apt-get update && \
     apt-get install \
       --assume-yes \
       --no-install-recommends \
+        ca-certificates \
         git \
         build-essential \
         scons \
@@ -23,7 +24,6 @@ RUN apt-get update && \
         libxi-dev \
         libxrandr-dev \
         libwayland-dev \
-        ca-certificates \
         python3 \
         python3-pip \
         python3-venv \
@@ -75,7 +75,7 @@ RUN \
       "platforms;android-35" \
       "cmdline-tools;latest" \
       "cmake;3.10.2.4988404" \
-      "ndk;28.1.13356709" \
+      "ndk;28.1.13356709"; \
   && rm --recursive --force /usr/share/sdk/commandlinetools/
 
 RUN python /godot-project/src-godot/misc/scripts/install_swappy_android.py
