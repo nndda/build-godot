@@ -61,13 +61,13 @@ RUN \
   && yes | \
     /usr/share/sdk/commandlinetools/cmdline-tools/bin/sdkmanager \
     --sdk_root=/usr/share/sdk/android/ \
+    --install \
       "platform-tools" \
       "build-tools;35.0.1" \
       "platforms;android-35" \
       "cmdline-tools;latest" \
       "cmake;3.10.2.4988404" \
       "ndk;28.1.13356709" \
-      --licenses
 
 RUN python /godot-project/src-godot/misc/scripts/install_swappy_android.py
 
