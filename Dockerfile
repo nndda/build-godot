@@ -47,16 +47,12 @@ ENV JAVA_HOME="/usr/share/sdk/java/jdk-17.0.18+8"
 
 RUN \
   mkdir --parents /usr/share/sdk/commandlinetools \
-
   && curl \
     --fail --location https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip \
     -o commandlinetools.zip \
-
   && unzip commandlinetools.zip \
     -d "/usr/share/sdk/commandlinetools/" \
-
   && rm commandlinetools.zip \
-
   && yes | \
     "/usr/share/sdk/commandlinetools/commandlinetools/cmdline-tools/bin/sdkmanager" \
     --sdk_root="/usr/share/sdk/android/" \

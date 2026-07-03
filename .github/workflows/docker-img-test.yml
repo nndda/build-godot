@@ -1,0 +1,23 @@
+name: Deployment
+
+
+on:
+  push:
+    paths:
+      - Dockerfile
+      - '**/*.yml'
+  workflow_dispatch:
+
+
+jobs:
+  docker-image: # -------------------------------------------------------------
+    name: Build & push Docker image
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6.0.3
+      - uses: ./.github/actions/build-docker-image
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          token: ${{ secrets.DOCKERHUB_TOKEN }}
